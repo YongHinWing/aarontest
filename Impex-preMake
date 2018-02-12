@@ -51,7 +51,6 @@ UPDATE Customer;uid[unique=true];defaultPaymentAddress(&addId);defaultShipmentAd
 
 
 #hello this is branch
-#hello this is master again
 
 
 ************************************************************
