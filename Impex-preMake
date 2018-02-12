@@ -1,0 +1,173 @@
+insert_update order; code[unique=true];versionID;originalVersion;fraudulent;potentiallyFraudulent;statusDisplay;fraudReports;historyEntries;orderTemplateCronJob;calculated;currency;date;deliveryAddress;deliveryCost;deliveryMode;deliveryStatus;description;expirationTime;name;net;paymentAddress;paymentCost;paymentInfo;paymentMode;paymentStatus;status;exportStatus;statusInfo;totalPrice;totalDiscounts;totalTax;totalTaxValuesInternal;totalTaxValues;user;subtotal;discountsIncludeDeliveryCost;discountsIncludePaymentCost;entryGroups;entries;discounts;consignments;paymentTransactions;appliedVoucherCodes;previousDeliveryMode;allPromotionResults;site;store;guid;quoteDiscountValuesInternal;promotionOrderRestrictions;deliveryFromAddress;account;orderPeriod;bonusPeriod;margin;pointValue;businessVolume;type;volumeAbo;volumeAmwayAccount;totalWeight;orderName;giftWrap;giftWrapPrice;employee;prorated;pickupDateTime;affiliateOrderNumber;deliveryTax;paymentInfos;batch;appliedCouponCodes;warehouse;selectedDeliverySlot;
+
+
+
+
+
+insert_update user;
+Principal;Category2PrincipalRelation;SyncItemJob2Principal;WorkflowTemplate2PrincipalRelation;CommentWatcherRelation;Principal2CockpitUIComponentReadAccessRelation;Principal2CockpitUIComponentWriteAccessRelation;description;name;displayName;uid[unique=true];allSearchRestrictions;allGroups;groups;searchRestrictions;accessibleCategories;writableCatalogVersions;readableCatalogVersions;syncJobs;visibleTemplates;profilePicture;watchedComments;readCollections;writeCollections;cockpitUIConfigurations;readableCockpitUIComponents;writableCockpitUIComponents;readSavedQueries;backOfficeLoginDisabled;ldapsearchbase;DN;CN;readAbstractLinkEntry;
+User;AbstractCommentAuthorRelation;CommentUserSettingUserRelation;CommentAssigneeRelation;WidgetPreferencesToUserRelation;UsersForRestriction;currentTime;currentDate;defaultPaymentAddress;defaultShipmentAddress;password;passwordEncoding;encodedPassword;passwordAnswer;passwordQuestion;sessionLanguage;sessionCurrency;userprofile;contactInfos;carts;quotes;orders;addresses;paymentInfos;tokens;createdComments;commentUserSettings;assignedComments;wishlist;collections;customerEmail;primaryEmail;primaryMobileNo;identity;race;dateOfBirth;isMarried;citizenship;country;
+
+
+
+INSERT_UPDATE Customer;originalUid[unique=true];uid[unique=true];title(code);name;description;sessionLanguage(isocode);sessionCurrency(isocode);groups(uid);&userId
+INSERT_UPDATE Address;&addId;owner(&userId)[unique=true];streetname[unique=true];postalcode[unique=true];duplicate[unique=true];town;country(isocode);region(isocode);billingAddress;contactAddress;shippingAddress;unloadingAddress;firstname;lastname;email;gender(code);middlename;phone1;title(code);url;company;fax;department
+INSERT_UPDATE CreditCardPaymentInfo;code[unique=true];user(uid)[unique=true];ccOwner;number;type(code);validFromMonth;validFromYear;validToMonth;validToYear;subscriptionId;duplicate[default=false];saved[default=true]
+INSERT_UPDATE Customer;uid[unique=true];defaultPaymentaddress(&addressID);defaultShipmentAddress(&addressID)
+INSERT_UPDATE Order;code[unique=true];user(uid);date[dateformat=dd.MM.yyyy HH:mm];currency(isocode);net;deliveryMode(code[default='premium-gross']);paymentMode(code);Discounts(code);calculated;site(uid);store(uid);status(code)
+INSERT_UPDATE OrderEntry;order(code)[unique=true];product(code,catalogVersion(catalog(id),version))[unique=true];quantity;calculated;unit(code);entryNumber;
+
+
+INSERT_UPDATE StandardPaymentMode;code[unique=true];name[lang=de];name[lang=en];description[lang=de];description[lang=en];active;paymentinfotype(code)
+INSERT_UPDATE StandardPaymentModeValue;paymentmode(code)[unique=true];currency(isoCode)[unique=true];value;;;;
+
+
+
+
+
+
+
+
+INSERT_UPDATE customer;uid[unique=true];name;title(code);
+;testuser;testuser;mr;
+
+
+
+INSERT_UPDATE Address;&addId;owner(&userId)[unique=true];streetname[unique=true];postalcode[unique=true];duplicate[unique=true];town;country(isocode);region(isocode);billingAddress;contactAddress;shippingAddress;unloadingAddress;firstname;lastname;email;gender(code);middlename;phone1;title(code);url;company;fax;department
+;addId0;userId0;Bukit Bintang Street;51100;false;KL;ID;;false;false;true;false;Aaron;Yong;;MALE;;;mr;;;;
+;addId1;userId0;Line 1;51278;false;KL;US;;false;false;true;false;;;;;;;;;;;
+;addId2;userId0;jln P ramlee;71288;false;KL;US;;false;false;true;false;;;;;;;;;;;
+
+
+
+# Sample customer addresses
+INSERT_UPDATE Address;&addId;owner(&userId)[unique=true];streetname[unique=true];postalcode[unique=true];duplicate[unique=true];town;country(isocode);billingAddress;contactAddress;shippingAddress;unloadingAddress;firstname;lastname;email;gender(code);middlename;phone1;title(code);url;company;fax;department
+;addr1;userId0;10 Yamashita-cho;231-8540;false;Yokohama;JP;true;true;true;true;Zohan;Agent;zohan@customer.com;MALE;;+48 32 44 00 810;mr;;Hybris;;
+
+# Set default payment and shipping addresses for sample customers
+UPDATE Customer;uid[unique=true];defaultPaymentAddress(&addId);defaultShipmentAddress(&addId)
+;testuser;addr1;addr1
+
+
+
+
+
+
+
+******************************************************************************************************************************************************************
+******************************************************************************************************************************************************************
+******************************************************************************************************************************************************************
+******************************************************************************************************************************************************************
+
+$lang=en
+$contentCatalog=amwayapacContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+
+
+INSERT_UPDATE Customer;uid[unique=true]    ;customerId  ;password   ;name        ;accounts(code)
+                      ;testuser            ;testuser    ;123456   ;"Test User" ;testuser
+
+INSERT_UPDATE AmwayAccount;code[unique=true]     ;businessNature(code)    ;primaryParty(uid);name       ;userPriceGroup(code)     ;registeredAddress(&addRef);level(&businessLevelRef)
+                          ;testuser              ;"AmwayBusinessNature_1" ;testuser         ;"Test User";AmwayDefaultABOPriceGroup;testuserAdd               ;testUserQual
+
+INSERT_UPDATE Address;owner(Customer.uid)[unique=true];country(isocode);postalcode;firstname;lastname;streetname;streetnumber;shippingAddress;billingAddress;&addRef
+;testuser;US;151001;TestFirstName;TestLastName;TestStreetName;TestStreetNumber;true;true;testuserAdd
+
+
+INSERT_UPDATE AmwayBusinessLevel;qualificationLevel(code)[unique=true];&businessLevelRef
+;QualificationLevelTypeEnum_340;testUserQual
+
+INSERT_UPDATE CreditCardPaymentInfo;code[unique=true];user(uid)[unique=true];ccOwner;number;type(code);validFromMonth;validFromYear;validToMonth;validToYear;subscriptionId;duplicate[default=false];saved[default=true]
+;CC001;testuser;Aaron Yong;4377610089999100;visa;;;05;2029;;false;true
+;CC002;testuser;Aaron;4378910000238789;master;;;11;2030;;false;true
+
+INSERT_UPDATE Order;code[unique=true];user(uid);date[dateformat=dd.MM.yyyy HH:mm];currency(isocode);net;deliveryMode(code[default='premium-gross']);paymentMode(code);Discounts(code);calculated;site(uid);store(uid);status(code)
+;ODR001;testuser;25.01.2018 01:39;USD;false;;;;false;amwayapac;amwayapac;
+;ODR002;testuser;26.01.2018 01:39;USD;false;;;;false;amwayapac;amwayapac;
+;ODR003;testuser;27.01.2018 01:39;USD;false;;;;false;amwayapac;amwayapac;
+;ODR004;testuser;06.12.2017 01:39;USD;false;;;;false;amwayapac;amwayapac;
+
+INSERT_UPDATE OrderEntry;order(code)[unique=true];product(code,catalogVersion(catalog(id),version))[unique=true];quantity;calculated;unit(code);entryNumber;
+;ODR001;E6863A:amwayapacProductCatalog:Online;5;false;pieces;0
+;ODR002;E9974M:amwayapacProductCatalog:Online;30;false;pieces;0
+;ODR003;AA0114M:amwayapacProductCatalog:Online;60;false;pieces;0
+;ODR004;A5924M:amwayapacProductCatalog:Online;90;false;pieces;0
+
+INSERT_UPDATE AmwayAccountGroupTag;code[unique=true];affiliate;active;groupType(code)
+                                  ;customergroup    ;100      ;true  ;HYBRIS_GROUP
+
+INSERT_UPDATE AmwayNotification;code[unique=true];shortDescription;longDescription;publishDate[dateformat=yyyy-MM-dd];site(uid)[default=amwayapac];expiryDate[dateformat=yyyy-MM-dd];status(code);publishedBy(Customer.customerID);accountGroupTag
+                               ;msg01            ;short01         ;long01         ;2018-01-29                        ;                            ;2018-05-25                       ;PUBLISHED   ;testuser                        ;
+                               ;msg02            ;short02         ;long02         ;2018-01-23                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg03            ;short03         ;long03         ;2018-01-22                        ;                            ;2018-02-25                       ;PUBLISHED   ;testuser                        ;
+                               ;msg04            ;short04         ;long04         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg05            ;short05         ;long05         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg06            ;short06         ;long06         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg07            ;short07         ;long07         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg08            ;short08         ;long08         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg09            ;short09         ;long09         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg10            ;short10         ;long10         ;2018-01-26                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg11            ;short11         ;long11         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg12            ;short12         ;long12         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg13            ;short13         ;long13         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg14            ;short14         ;long14         ;2018-01-30                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg15            ;short15         ;long15         ;2018-01-21                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+                               ;msg16            ;short16         ;long16         ;2018-02-02                        ;                            ;2018-05-26                       ;PUBLISHED   ;testuser                        ;
+
+
+### Please use Notification code in source and Account group tag in target column
+INSERT_UPDATE AmwayNotificationAccountGroupTagRel;source(code)[unique=true];target(code)[unique=true]
+                                                 ;msg01                   ;customergroup
+                                                 ;msg02                   ;customergroup
+                                                 ;msg03                   ;customergroup
+                                                 ;msg04                   ;customergroup
+												 ;msg05                   ;customergroup
+												 ;msg06                   ;customergroup
+												 ;msg07                   ;customergroup
+												 ;msg08                   ;customergroup
+												 ;msg09                   ;customergroup
+												 ;msg10                   ;customergroup
+												 ;msg11                   ;customergroup
+												 ;msg12                   ;customergroup
+												 ;msg13                   ;customergroup
+												 ;msg14                   ;customergroup
+												 ;msg15                   ;customergroup
+                         ;msg16                   ;customergroup
+
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang];
+                                   ;                       ;msg01           ;"<p>Test Message details 01</p>"
+                                   ;                       ;msg02           ;"<p>Test Message details 02</p>"
+                                   ;                       ;msg03           ;"<p>Test Message details 03</p>"
+                                   ;                       ;msg04           ;"<p>Test Message details 04</p>"
+								   ;                       ;msg05           ;"<p>Test Message details 05</p>"
+								   ;                       ;msg06           ;"<p>Test Message details 06</p>"
+								   ;                       ;msg07           ;"<p>Test Message details 07</p>"
+								   ;                       ;msg08           ;"<p>Test Message details 08</p>"
+								   ;                       ;msg09           ;"<p>Test Message details 09</p>"
+								   ;                       ;msg10           ;"<p>Test Message details 10</p>"
+								   ;                       ;msg11           ;"<p>Test Message details 11</p>"
+								   ;                       ;msg12           ;"<p>Test Message details 12</p>"
+								   ;                       ;msg13           ;"<p>Test Message details 13</p>"
+								   ;                       ;msg14           ;"<p>Test Message details 14</p>"
+								   ;                       ;msg15           ;"<p>Test Message details 15</p>"
+                   ;                       ;msg16           ;"<p>Test Message details 16</p>"
+
+INSERT_UPDATE AmwayNotificationUserAction;notification(code)[unique=true];user(Customer.customerID)[unique=true];status(code)
+                                         ;msg01                          ;testuser                              ;UNREAD
+                                         ;msg02                          ;testuser                              ;UNREAD
+                                         ;msg03                          ;testuser                              ;UNREAD
+                                         ;msg04                          ;testuser                              ;UNREAD
+                                         ;msg05                          ;testuser                              ;UNREAD
+                                         ;msg06                          ;testuser                              ;READ
+                                         ;msg07                          ;testuser                              ;READ
+                                         ;msg08                          ;testuser                              ;READ
+                                         ;msg09                          ;testuser                              ;READ
+                                         ;msg10                          ;testuser                              ;READ
+                                         ;msg11                          ;testuser                              ;DELETED
+                                         ;msg12                          ;testuser                              ;DELETED
+                                         ;msg13                          ;testuser                              ;DELETED
+                                         ;msg14                          ;testuser                              ;DELETED
+                                         ;msg15                          ;testuser                              ;DELETED
+                                         ;msg16                          ;testuser                              ;READ
